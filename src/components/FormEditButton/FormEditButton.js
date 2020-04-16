@@ -1,21 +1,25 @@
-import React from 'react';
-import Auxilary from '../../hoc/Auxilary/Auxilary';
-import classes from './FormEditButton.module.css';
-const formeditbutton = (props) =>{
+import React, { useState } from "react";
+import classes from "./FormEditButton.module.css";
+const formeditbutton = (props) => {
+  console.log(props.name);
 
-    return(
-        <Auxilary>
-            <h3>Edit Your Category Please...</h3>
-            <p>Its Your Choice</p>
-            <ul>
-                <input placeholder = "Edit Your Category Please"></input>
-            </ul>
-            <div><button>Cancel</button>
-                 <button>Edit</button>
-            </div>
-            
-        </Auxilary>
-    );
-}
+  return (
+    <>
+      <h3>Edit Your Category Please...</h3>
+      <p>Its Your Choice</p>
+      <ul>
+        <input
+          placeholder="Edit Your Category Please"
+          value={props.name}
+          onChange={props.change}
+        ></input>
+      </ul>
+      <div>
+        <button onClick={props.toggleEdit}>Cancel</button>
+        <button onClick={props.acceptChange}>Edit</button>
+      </div>
+    </>
+  );
+};
 
 export default formeditbutton;
