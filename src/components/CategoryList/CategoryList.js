@@ -6,10 +6,13 @@ const categoryList = (props) =>
 {
 
     return(
-        <Category
+        <div className = {classes.CategoryList}>
+        <Category 
                 name = {props.label}
                 clickedremoved = {props.removeCategory}
                 clickededited  = {props.editCategory}/>
+                
+        </div>
     );    
 }
 

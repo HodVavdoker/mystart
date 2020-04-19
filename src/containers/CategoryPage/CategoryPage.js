@@ -3,7 +3,11 @@ import Auxilary from "../../hoc/Auxilary/Auxilary";
 import CategoryList from "../../components/CategoryList/CategoryList";
 import Modal from "../../components/Modal/Modal";
 import FormEditButton from "../../components/FormEditButton/FormEditButton";
+import FormAddButton from "../../components/FormAddButton/FormAddButton";
+
+
 import classes from "./CategoryPage.module.css";
+import Layout from "../../components/Layout/Layout";
 class CategoryPage extends Component {
   state = {
     category: [
@@ -14,6 +18,8 @@ class CategoryPage extends Component {
     ],
 
     edited: false,
+    added : false,
+    view:false,
   };
 
   // function thats need to be a Ations
@@ -25,7 +31,16 @@ class CategoryPage extends Component {
     category.splice(CategoryIndex, 1);
     this.setState({ category: category });
   };
-
+  addhandler = (event) =>{
+    this.setState({categorytoAdd: event.target.value,
+                    added:!this.state.added });
+                     
+  }
+  acceptAddHandler = () => {
+    let array = this.state.category;
+    this.setState({category:[...this.state.category,this.state.categorytoAdd]})
+    
+  };  
   editCategory = (category) => {
     console.log(category);
     this.setState({
@@ -36,8 +51,17 @@ class CategoryPage extends Component {
   };
 
   toggleEdit = () => {
-    this.setState({ edited: !this.state.edited });
+    this.setState({ edited: !this.state.edited,});
   };
+
+  toggleAdd = () => {
+    this.setState({ added: !this.state.added,});
+  };
+  viewCategory = () => {
+    this.setState({ view: !this.state.view });
+    console.log(this.state.viewview);
+  };
+
   editHandler = (event) => {
     this.setState({ categoryToEdit: event.target.value });
   };
@@ -52,16 +76,21 @@ class CategoryPage extends Component {
     this.setState({ category: array });
   };
   render() {
+    let seecategory;
+  
     let listcategory;
-    listcategory = this.state.category.map((category) => (
-      <CategoryList
-        key={category.id}
-        name={category.name}
-        label={category.name}
-        editCategory={() => this.editCategory(category)}
-        removeCategory={() => this.removeCategory(category.id)}
-      />
-    ));
+     if(this.state.view){
+      listcategory = this.state.category.map((category) => (
+        <CategoryList
+          key={category.id}
+          name={category.name}
+          label={category.name}
+          editCategory={() => this.editCategory(category)}
+          removeCategory={() => this.removeCategory(category.id)}
+        />
+      ));
+     }
+
     return (
       <Auxilary>
         <Modal show={this.state.edited}>
@@ -71,10 +100,20 @@ class CategoryPage extends Component {
             acceptChange={this.acceptChangeHandler}
             toggleEdit={this.toggleEdit}
           ></FormEditButton>
+          ></Modal>
+        <Modal show = {this.state.added}>
+            <FormAddButton
+            change={this.addHandler}
+            acceptChange={this.acceptAddHandler}
+            toggleAdd={this.toggleAdd}
+
+            ></FormAddButton>
         </Modal>
-        {listcategory}
+        <Layout 
+                viewcategory = {this.viewCategory}
+                addhandler = {this.addhandler}/> 
+        {listcategory}  
         <div>Buttons to show List or Not </div>
-        <div>ListOfCategories</div>
       </Auxilary>
     );
   }
