@@ -5,18 +5,17 @@ const formeditbutton = (props) => {
 
   return (
     <>
-      <h3>Edit Your Category Please...</h3>
-      <p>Its Your Choice</p>
-      <ul>
-        <input
+    <div className = {classes.Form}>
+      <h3>Edit Your Category Please</h3>
+        <input className={classes.Input}
           placeholder="Edit Your Category Please"
           value={props.name}
           onChange={props.change}
         ></input>
-      </ul>
       <div>
-        <button onClick={props.toggleEdit}>Cancel</button>
-        <button onClick={props.acceptChange}>Edit</button>
+        <button className={classes.Button} onClick={props.toggleEdit}>Cancel</button>
+        <button className={classes.Button} onClick={props.acceptChange}>Edit</button>
+      </div>
       </div>
     </>
   );
