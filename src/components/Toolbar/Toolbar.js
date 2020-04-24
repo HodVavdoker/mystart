@@ -1,19 +1,10 @@
-import React , {useState} from 'react';
+import React  from 'react';
 import classes from './Toolbar.module.css';
 import NavigationItems from '../NavigationItems/NavigationItems';
+import {withRouter} from 'react-router-dom';
 
 
 const toolbar = (props) =>{
-    
-    
-    // const [viewState , setViewcategory] =useState({view:true});
-    // console.log(viewState);
-
-    // const viewCategory = () =>{
-    //     setViewcategory({ view: false });
-    //     console.log(viewState);
-    
-
     return(
 
             <header className={classes.Toolbar}>
@@ -23,11 +14,13 @@ const toolbar = (props) =>{
                 </nav>
                 <div className={classes}>
                 <button className={classes.Button}
-                        onClick = {props.viewcategory}>
+                        onClick = {props.viewcategory}
+                        >
                         VIEW
                 </button>
                 <button className={classes.Button}
-                        onClick = {props.addhandler}>
+                        onClick = {props.addhandler}
+                        >         
                         ADD
                 </button>
                 </div>
@@ -36,4 +29,4 @@ const toolbar = (props) =>{
     );  
 }
 
-export default toolbar;
+export default withRouter(toolbar);

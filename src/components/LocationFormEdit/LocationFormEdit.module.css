@@ -1,13 +1,14 @@
-.Category{
-    text-align: center;
-    border: 0.01em solid #111111;
-    width: 350px;
-    background-color: white;
+.Input{
+    margin-bottom: 15px;
+    font-size:18px;
+  padding:10px 10px 10px 5px;
+  width:200px;
+  border:none;
+  border-bottom:1px solid #757575;
+  border-radius: 6px;
 }
-.Label{
-    
-    margin-right: 15px;
-}
+
+
 .Button{
     display: inline-block;
     padding: 0.5em 3em;

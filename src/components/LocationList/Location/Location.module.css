@@ -1,12 +1,13 @@
-.Category{
+.Location{
     text-align: center;
     border: 0.01em solid #111111;
-    width: 350px;
+    height: 100%;
+    width: 20%;
     background-color: white;
 }
 .Label{
     
-    margin-right: 15px;
+    margin-right: 50px;
 }
 .Button{
     display: inline-block;

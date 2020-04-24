@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import classes from "./FormEditButton.module.css";
 const formeditbutton = (props) => {
-  console.log(props.name);
 
   return (
     <>

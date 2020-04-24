@@ -1,10 +1,11 @@
 import React from 'react';
 import classes from './CategoryList.module.css';
 import Category from './Category/Category';
+import {withRouter} from 'react-router-dom';
 
 const categoryList = (props) =>
 {
-
+    console.log(props);
     return(
         <div className = {classes.CategoryList}>
         <Category 
@@ -16,4 +17,4 @@ const categoryList = (props) =>
     );    
 }
 
-export default categoryList;
+export default withRouter(categoryList);
