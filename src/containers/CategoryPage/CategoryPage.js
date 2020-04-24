@@ -33,6 +33,7 @@ class CategoryPage extends Component {
     const category = [...this.state.category];
     category.splice(CategoryIndex, 1);
     this.setState({ category: category });
+    console.log("asdasd");
   };
 
   addname = (event) => {
