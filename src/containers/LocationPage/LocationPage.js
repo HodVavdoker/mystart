@@ -4,6 +4,8 @@ import Modal from "../../components/Modal/Modal";
 import LocationList from '../../components/LocationList/LocationList';
 import LocationFormEdit from '../../components/LocationFormEdit/LocationFormEdit';
 import FormAddButton from '../../components/FormAddButton/FormAddButton';
+import FormAddLocation from '../../components/FormAddLocation//FormAddLocation';
+import Layout from '../../components/Layout/Layout';
 
 class LocationPage extends Component{
 
@@ -14,17 +16,30 @@ class LocationPage extends Component{
           { id: "3", name: "Art"    ,address: "Yos", coordinates: "107" , category : "gas" },
           { id: "4", name: "Movies" ,address: "Sap", coordinates: "110" , category : "sfg"},
         ],
-    
+        categorytoAdd:{id:"",name:"",address:"",  coordinates: "" , category : ""},
         edited: false,
         added : false,
         view:false,
       };
 
-      allstate = () =>{
-        
-        localStorage.setItem('mystate' , this.state.location);
-      }
+      componentDidMount()
+      {
+        if(localStorage.getItem('mylocationstate'))
+        {
+          this.state.location =JSON.parse(localStorage.getItem('mylocationstate'));
+          this.setState({
+            id : this.state.location.id,
+            name : this.state.location.name,
+            address : this.state.location.address,
+            coordinates : this.state.location.coordinates,
+            category : this.state.location.category
+          });
+        }
+        else{
 
+        } 
+        //localStorage.getItem('mycategorystate' ,JSON.stringify( this.state.category));
+      }
       removeLocation = (id) => {
         const LocationIndex = this.state.location.findIndex((p) => {
           return p.id === id;
@@ -32,6 +47,7 @@ class LocationPage extends Component{
         const location = [...this.state.location];
         location.splice(LocationIndex, 1);
         this.setState({ location: location });
+        localStorage.setItem('mylocationstate' ,JSON.stringify(location));
       };
       locationFormEditCancel = () =>{
         //this.props.history.goBack();
@@ -84,13 +100,39 @@ class LocationPage extends Component{
         array[index].coordinates = this.state.locationcoordinatestoedit;
         array[index].category = this.state.locationcategorytoedit;
         this.setState({ location: array });
+        localStorage.setItem('mylocationstate' ,JSON.stringify(array));
       }
+      toggleAdd = () => {this.setState({ added: !this.state.added});};
+      addnamehandler = (event) => {this.setState({ locationnametoadd: event.target.value,});};
+      addaddresshandler = (event) => {this.setState({ locationaddresstoadd: event.target.value});};
+      addcoordinateshandler = (event) => {this.setState({ locationcoordinatestoadd: event.target.value});}; 
+      addcategoryhandler = (event) => {this.setState({ locationcategorytoadd: event.target.value});};
+      addhandler = () =>{this.setState({added:!this.state.added});}
+      
+      acceptAddHandler = () => {
+      let array = this.state.location;
+      let newIndex = this.state.location.length + 1;
+      
+      this.setState({locationtoAdd:
+     {'id'   :this.state.newid,
+      'name' :this.state.locationnametoadd,
+      'address' :this.state.locationaddresstoadd ,
+      'coordinates':this.state.locationcoordinatestoadd ,
+      'category' :this.state.locationcategorytoadd,}});
+      this.setState({location:[...array,this.state.locationtoAdd]});
+      console.log(this.state.locationtoAdd);
+      localStorage.setItem('mylocationstate',JSON.stringify(array));
+      }; 
 
+      viewLocation = () => {
+        this.setState({ view: !this.state.view });
+        console.log(this.state.view);
+      };
 
     render(){
-        
-        let myform = <FormAddButton/>
         let listlocation;
+
+        if(this.state.view){
         listlocation = this.state.location.map((location) => (
             <LocationList
               key={location.id}
@@ -102,7 +144,7 @@ class LocationPage extends Component{
               removeLocation={() => this.removeLocation(location.id)}
             />
           ));
-
+        }
         return(
             <>
             <Auxilary>
@@ -121,6 +163,21 @@ class LocationPage extends Component{
               locationFormEditCancel = {this.locationFormEditCancel}
                />
             </Modal>
+            <Modal show = {this.state.added}>
+            <FormAddLocation
+            thestate = "Location"
+            acceptAddHandler={this.acceptAddHandler}
+            toggleAdd={this.toggleAdd}
+            addname = {this.addnamehandler}
+            addaddress = {this.addaddresshandler}
+            addcoordinates = {this.addcoordinateshandler}
+            addcategory = {this.addcategoryhandler}
+
+            ></FormAddLocation>
+        </Modal>
+        <Layout
+                view = {this.viewLocation}
+                addhandler = {this.addhandler}/> 
             {listlocation}
             </Auxilary>
             </>

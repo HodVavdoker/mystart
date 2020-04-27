@@ -3,7 +3,7 @@ import Layout from './components/Layout/Layout';
 import './App.module.css';
 import CategoryPage from './containers/CategoryPage/CategoryPage';
 import LocationPage from './containers/LocationPage/LocationPage';
-import {Route , Switch , Redirect} from 'react-router-dom';
+import {Route,Switch} from 'react-router-dom';
 
 class App extends Component
  {

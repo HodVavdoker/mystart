@@ -4,9 +4,9 @@ const formaddbutton = (props) => {
   return (
     <>
     <div className = {classes.Form}>
-      <h3>Add Your Category Please</h3>
+  <h3>Add Your {props.thestate} Please</h3>
         <input className={classes.Input}
-          placeholder="Add Your Category Please"
+          placeholder="Add Your Catgory Please"
           onChange={props.addname}
         ></input>
       <div>

@@ -5,7 +5,6 @@ import {withRouter} from 'react-router-dom';
 
 const categoryList = (props) =>
 {
-    console.log(props);
     return(
         <div className = {classes.CategoryList}>
         <Category 

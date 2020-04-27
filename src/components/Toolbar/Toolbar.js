@@ -14,7 +14,7 @@ const toolbar = (props) =>{
                 </nav>
                 <div className={classes}>
                 <button className={classes.Button}
-                        onClick = {props.viewcategory}
+                        onClick = {props.view}
                         >
                         VIEW
                 </button>

@@ -4,7 +4,6 @@ import Location from './Location/Location';
 import {withRouter} from 'react-router-dom';
 
 const locationList = (props) =>{
-    console.log(props);
 return(
     <div className = {classes.LocationList}>
     <Location       name ={props.name}

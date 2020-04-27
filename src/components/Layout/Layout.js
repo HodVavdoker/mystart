@@ -6,7 +6,7 @@ const layout = (props) => (
   <Auxilary >
     <Toolbar 
              addhandler = {props.addhandler}
-             viewcategory = {props.viewcategory}
+             view= {props.view}
              link = "/category"
              linki = "/location"/>
     <main className={classes.Content}>{props.children}</main>
