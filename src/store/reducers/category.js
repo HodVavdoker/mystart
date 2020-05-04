@@ -1,6 +1,4 @@
-/*
-import { array, object } from "prop-types"
-
+import * as actionTypes from '../actions';
 const CategoryState = {
         category: [
           { id: "0", name: "Sport" },
@@ -19,13 +17,13 @@ const reducer = (state = CategoryState,action) =>{
 
     switch(action.type)
     {
-        case 'REMOVE_CATEGORY' : 
+        case actionTypes.REMOVE_CATEGORY : 
             const updatedCategory =  state.category.filter((category) => category.id !== action.CategoryElId)
             return{
                 ...state, 
-                category: updatedCategory
+                category: updatedCategory  
             }   
-        case 'ADD_NAME' : 
+        case actionTypes.ADD_NAME : 
         console.log(action.length);
         console.log(action.payload);
            state.categorytoAdd.id = action.length;
@@ -36,52 +34,52 @@ const reducer = (state = CategoryState,action) =>{
                 ...state
                 //category : state.category.concat(state.categorytoAdd)
             }
-        case 'ADD_HANDLER' : 
+        case actionTypes.ADD_HANDLER : 
             return{
                 ...state,
                 added : !state.added
             }
-        case 'ACCEPT_ADD_HANDLER' :
+        case actionTypes.ACCEPT_ADD_HANDLER :
             console.log(state.categorytoAdd);
             console.log(state.category);
             return{
                 ...state,
                 category : [...state.category , state.categorytoAdd]
             }
-            return{
-                ...state,
-                category : state.category.concat(state.categorytoAdd),  
-            }
+            //return{
+            //    ...state,
+            //    category : state.category.concat(state.categorytoAdd),  
+            //}
             
-        case 'EDIT_CATEGORY' : 
+        case actionTypes.EDIT_CATEGORY : 
             return{
                 ...state,
                 edited: true,
                 categoryToEdit: action.category.name,
                 categoryToEditId : action.category.id,
             }
-        case 'EDIT_HANDLER' : 
+        case actionTypes.EDIT_HANDLER : 
             console.log(state.categoryToEditId + state.categoryToEdit);
             return{
                 ...state,
                 categoryToEdit: action.payload
             }
-        case 'TOGGLE_EDIT' : 
+        case actionTypes.TOGGLE_EDIT : 
             return{
                 ...state,
                 edited : !state.edited
             }
-        case 'TOGGLE_ADD' :
+        case actionTypes.TOGGLE_ADD :
             return{
                 ...state,
                 added : !state.added
             }
-            case 'VIEW_CATEGORY' : 
+            case actionTypes.VIEW_CATEGORY : 
             return{
                 ...state,
                 view : !state.view
             }
-            case 'ACCEPT_CHANGE_HANDLER' :
+            case actionTypes.ACCEPT_CHANGE_HANDLER :
                 return {
                     category: state.category.map(category => category.id === action.id ? 
                         {
@@ -89,9 +87,9 @@ const reducer = (state = CategoryState,action) =>{
                             name : action.name 
                         } : category)
                 };
+            default :      
     }
     return state;
 }
 
 export default reducer;
-*/

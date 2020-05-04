@@ -3,9 +3,10 @@ import Auxilary from "../../hoc/Auxilary/Auxilary";
 import Modal from "../../components/Modal/Modal";
 import LocationList from '../../components/LocationList/LocationList';
 import LocationFormEdit from '../../components/LocationFormEdit/LocationFormEdit';
-import FormAddButton from '../../components/FormAddButton/FormAddButton';
 import FormAddLocation from '../../components/FormAddLocation//FormAddLocation';
 import Layout from '../../components/Layout/Layout';
+import {connect} from 'react-redux'; 
+import * as actionTypes from '../../store/actions';
 
 class LocationPage extends Component{
 
@@ -22,24 +23,24 @@ class LocationPage extends Component{
         view:false,
       };
 
-      componentDidMount()
-      {
-        if(localStorage.getItem('mylocationstate'))
-        {
-          this.state.location =JSON.parse(localStorage.getItem('mylocationstate'));
-          this.setState({
-            id : this.state.location.id,
-            name : this.state.location.name,
-            address : this.state.location.address,
-            coordinates : this.state.location.coordinates,
-            category : this.state.location.category
-          });
-        }
-        else{
+   //   componentDidMount()
+  //    {
+      //   if(localStorage.getItem('mylocationstate'))
+      //   {
+      //     this.state.location =JSON.parse(localStorage.getItem('mylocationstate'));
+      //     this.setState({
+      //       id : this.state.location.id,
+      //       name : this.state.location.name,
+      //       address : this.state.location.address,
+      //       coordinates : this.state.location.coordinates,
+      //       category : this.state.location.category
+      //     });
+      //   }
+      //   else{
 
-        } 
-        //localStorage.getItem('mycategorystate' ,JSON.stringify( this.state.category));
-      }
+      //   } 
+      //   //localStorage.getItem('mycategorystate' ,JSON.stringify( this.state.category));
+      // }
       removeLocation = (id) => {
         const LocationIndex = this.state.location.findIndex((p) => {
           return p.id === id;
@@ -66,7 +67,7 @@ class LocationPage extends Component{
           locationidtoedit :location.id,
         });
       };
-      toggleEdit = () => {
+      toggleEdit = () => { 
         this.setState({ edited: !this.state.edited});
       };
 //      editHandler = (event) => {
@@ -78,14 +79,17 @@ class LocationPage extends Component{
 //          );
 //      };
 
-      editnameHandler = (event) => {
-        this.setState({ locationnametoedit: event.target.value});};
-      editaddressHandler = (event) => {
-        this.setState({locationaddresstoedit: event.target.value});};
-      editcoordinatesHandler = (event) => {
-        this.setState({locationcoordinatestoedit: event.target.value});};
-      editcategoryHandler = (event) => {
-        this.setState({locationcategorytoedit: event.target.value});};
+      editnameHandler           = (event) => {this.setState({ locationnametoedit: event.target.value});};
+      editaddressHandler        = (event) => {this.setState({locationaddresstoedit: event.target.value});};
+      editcoordinatesHandler    = (event) => {this.setState({locationcoordinatestoedit: event.target.value});};
+      editcategoryHandler       = (event) => {this.setState({locationcategorytoedit: event.target.value});};
+
+      addnamehandler            = (event) => {this.setState({ locationnametoadd: event.target.value,});};  
+      addaddresshandler         = (event) => {this.setState({ locationaddresstoadd: event.target.value});};
+      addcoordinateshandler     = (event) => {this.setState({ locationcoordinatestoadd: event.target.value});}; 
+      addcategoryhandler        = (event) => {this.setState({ locationcategorytoadd: event.target.value});};
+      
+      addhandler                = ()=>{this.setState({added:!this.state.added});}
       
        acceptChangeHandler = () =>{
        // this.props.history.goBack();
@@ -103,16 +107,11 @@ class LocationPage extends Component{
         localStorage.setItem('mylocationstate' ,JSON.stringify(array));
       }
       toggleAdd = () => {this.setState({ added: !this.state.added});};
-      addnamehandler = (event) => {this.setState({ locationnametoadd: event.target.value,});};
-      addaddresshandler = (event) => {this.setState({ locationaddresstoadd: event.target.value});};
-      addcoordinateshandler = (event) => {this.setState({ locationcoordinatestoadd: event.target.value});}; 
-      addcategoryhandler = (event) => {this.setState({ locationcategorytoadd: event.target.value});};
-      addhandler = () =>{this.setState({added:!this.state.added});}
+
       
       acceptAddHandler = () => {
       let array = this.state.location;
-      let newIndex = this.state.location.length + 1;
-      
+      //let newIndex = this.state.location.length + 1;
       this.setState({locationtoAdd:
      {'id'   :this.state.newid,
       'name' :this.state.locationnametoadd,
@@ -132,58 +131,101 @@ class LocationPage extends Component{
     render(){
         let listlocation;
 
-        if(this.state.view){
-        listlocation = this.state.location.map((location) => (
+        if(this.props.view){
+        listlocation = this.props.location.map((location) => (
             <LocationList
               key={location.id}
               name={location.name}
               address={location.address}
               coordinates={location.coordinates}
               category = {location.category}
-              editLocation={() => this.editLocation(location)}
-              removeLocation={() => this.removeLocation(location.id)}
+              editLocation={() => this.props.editLocation(location)}
+              removeLocation={() => this.props.removeLocation(location.id)}
             />
           ));
         }
         return(
             <>
             <Auxilary>
-            <Modal show = {this.state.edited}>
+            <Modal show = {this.props.edited}>
               <LocationFormEdit
-              name={this.state.edited ? this.state.locationnametoedit : ""} 
-              address={this.state.edited ? this.state.locationaddresstoedit : ""} 
-              coordinates={this.state.edited ? this.state.locationcoordinatestoedit : ""} 
-              category={this.state.edited ? this.state.locationcategorytoedit : ""} 
-              change = {this.editnameHandler}
-              change1 = {this.editaddressHandler}
-              change2 = {this.editcoordinatesHandler}
-              change3 = {this.editcategoryHandler}
-              toggleEdit = {this.toggleEdit}
-              acceptChange={this.acceptChangeHandler}
-              locationFormEditCancel = {this.locationFormEditCancel}
+              name={this.props.edited ? this.props.locationnametoedit : ""} 
+              address={this.props.edited ? this.props.locationaddresstoedit : ""} 
+              coordinates={this.props.edited ? this.props.locationcoordinatestoedit : ""} 
+              category={this.props.edited ? this.props.locationcategorytoedit : ""} 
+              change = {(event)=>this.props.editnameHandler(event.target.value)}
+              change1 = {(event)=>this.props.editaddressHandler(event.target.value)}
+              change2 = {(event)=>this.props.editcoordinatesHandler(event.target.value)}
+              change3 = {(event)=>this.props.editcategoryHandler(event.target.value)}
+              toggleEdit = {this.props.toggleEdit}
+              acceptChange={()=>this.props.acceptChangeHandler(this.props.locationidtoedit,this.props.locationnametoedit ,this.props.locationaddresstoedit , this.props.locationcoordinatestoedit , this.props.locationcategorytoedit)}
+              locationFormEditCancel = {this.props.locationFormEditCancel}
                />
             </Modal>
-            <Modal show = {this.state.added}>
+            <Modal show = {this.props.added}>
             <FormAddLocation
             thestate = "Location"
-            acceptAddHandler={this.acceptAddHandler}
-            toggleAdd={this.toggleAdd}
-            addname = {this.addnamehandler}
-            addaddress = {this.addaddresshandler}
-            addcoordinates = {this.addcoordinateshandler}
-            addcategory = {this.addcategoryhandler}
+            acceptAddHandler={this.props.acceptAddHandler}
+            toggleAdd={this.props.toggleAdd}
+            addname = {(event)=>this.props.addnamehandler(event.target.value)}
+            addaddress = {(event)=>this.props.addaddresshandler(event.target.value)}
+            addcoordinates = {(event)=>this.props.addcoordinateshandler(event.target.value)}
+            addcategory = {(event)=>this.props.addcategoryhandler(event.target.value)}
 
             ></FormAddLocation>
         </Modal>
         <Layout
-                view = {this.viewLocation}
-                addhandler = {this.addhandler}/> 
-            {listlocation}
+                view = {this.props.viewLocation}
+                addhandler = {this.props.addhandler}/> 
+                {listlocation}
             </Auxilary>
             </>
     
         );
     }
 }
+const mapStateToProps = state =>{
+  return{
+    locationtoAdd                    : state.loc.locationtoAdd,
+    location                         : state.loc.location,
+    edited                           : state.loc.edited,
+    added                            : state.loc.added,
+    view                             : state.loc.view,
+    locationnametoedit               : state.loc.locationnametoedit,
+    locationaddresstoedit            : state.loc.locationaddresstoedit,
+    locationcoordinatestoedit        : state.loc.locationcoordinatestoedit,
+    locationcategorytoedit           : state.loc.locationcategorytoedit,
+    locationidtoedit                 : state.loc.locationidtoedit,
+    locationnametoadd                : state.loc.locationnametoadd,
+    locationaddresstoadd             : state.loc.locationaddresstoadd,
+    locationcoordinatestoadd         : state.loc.locationcoordinatestoadd,
+    locationcategorytoadd            : state.loc.locationcategorytoadd,
+  }
+};
 
-export default LocationPage;
+const mapDispatchtoProps = dispatch =>{
+  return{ 
+    removeLocation :                (id) =>dispatch({type:actionTypes.REMOVE_LOCATION , LocationElId: id}),  
+    locationFormEditCancel:         () =>dispatch({type:actionTypes.LOCATION_FORM_EDIT_CANCEL}),
+    editLocation :                  (location) =>dispatch({type:actionTypes.EDIT_LOCATION , location : location}),
+    toggleEdit :                    () =>dispatch({type:actionTypes.TOGGLE_EDIT_LOCATION}), 
+    editnameHandler :               (value) =>dispatch({type:actionTypes.EDIT_NAME_HANDLER , payload : value}),
+    editaddressHandler :            (value) =>dispatch({type:actionTypes.EDIT_ADDRESS_HANDLER ,payload : value}), 
+    editcoordinatesHandler :        (value) =>dispatch({type:actionTypes.EDIT_COORDINATES_HANDLER,payload : value}), 
+    editcategoryHandler :           (value) =>dispatch({type:actionTypes.EDIT_CATEGORY_HANDLER,payload : value}),
+    acceptChangeHandler:            (id,name,address,coordinates,category) =>dispatch({type:actionTypes.ACCEPT_CHANGE_HANDLER_LOCATION,id:id,name:name,address:address,coordinates:coordinates,category:category}),
+    addnamehandler :                (value) =>dispatch({type:actionTypes.ADD_NAME_HANDLER,payload : value}),
+    addaddresshandler :             (value) =>dispatch({type:actionTypes.ADD_ADDRESS_HANDLER,payload : value}), 
+    addcoordinateshandler:          (value) =>dispatch({type:actionTypes.ADD_COORDINATES_HANDLER,payload : value}),
+    addcategoryhandler :            (value) =>dispatch({type:actionTypes.ADD_CATEGORY_HANDLER,payload : value}),
+    addhandler:                     () =>dispatch({type:actionTypes.ADD_HANDLER_LOCATION}),
+    acceptAddHandler:               () =>dispatch({type:actionTypes.ACCEPT_ADD_HANDLER_LOCATION}),
+    viewLocation:                   () =>dispatch({type:actionTypes.VIEW_LOCATION}),
+    toggleAdd:                      () =>dispatch({type:actionTypes.TOGGLE_ADD_LOCATION}),
+  };
+}
+
+
+
+export default connect(mapStateToProps,mapDispatchtoProps)(LocationPage); 
+

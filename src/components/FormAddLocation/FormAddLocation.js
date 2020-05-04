@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./FormAddLocation.module.css";
 const formaddlocation = (props) => {
+  
   return (
     <>
     <div className = {classes.Form}>

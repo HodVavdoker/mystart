@@ -6,8 +6,9 @@ import FormEditButton from "../../components/FormEditButton/FormEditButton";
 import FormAddButton from "../../components/FormAddButton/FormAddButton";
 import Layout from "../../components/Layout/Layout";
 import {connect} from 'react-redux'; 
+import * as actionTypes from '../../store/actions';
 class CategoryPage extends Component {
-  state = {
+/*  state = {
     category: [
       { id: "1", name: "Sport" },
       { id: "2", name: "Poet" },
@@ -31,10 +32,13 @@ componentDidMount()
       name : this.state.category.name,
     });
   } 
+  
   //localStorage.getItem('mycategorystate' ,JSON.stringify( this.state.category));
+  
 }
+*/
   // function thats need to be a Ations
-  removeCategory = (id) => {
+ /* removeCategory = (id) => {
     const CategoryIndex = this.state.category.findIndex((p) => {
       return p.id === id;
     });
@@ -44,6 +48,7 @@ componentDidMount()
     localStorage.setItem('mycategorystate' ,JSON.stringify(this.state.category));
     console.log( localStorage.setItem('mycategorystate' ,JSON.stringify(this.state.category)));
   };
+  
   addname = (event) => {
     let newIndex = this.state.category.length + 1;
     this.setState({ categorynametoadd: event.target.value });
@@ -55,6 +60,7 @@ componentDidMount()
   addhandler = () =>{
                this.setState({added:!this.state.added});
   }
+  
   acceptAddHandler = () => {
     let array = this.state.category;
 //    let newIndex = this.state.category.length + 1;
@@ -100,43 +106,44 @@ componentDidMount()
     this.setState({ category: array });
     localStorage.setItem('mycategorystate' ,JSON.stringify(array));
   };
+  */
   render() {
-    let myCategoryState = localStorage.getItem('mycategorystate');
+  //  let myCategoryState = localStorage.getItem('mycategorystate');
     let listcategory;
  
-     if(this.state.view){
-      listcategory = this.state.category.map((category) => (
+     if(this.props.view){
+      listcategory = this.props.category.map((category) => (
         <CategoryList
           key={category.id}
           name={category.name}
           label={category.name}
-          editCategory={() => this.editCategory(category)}
-          removeCategory={() => this.removeCategory(category.id)}
+          editCategory={() => this.props.editCategory(category)}
+          removeCategory={() => this.props.removeCategory(category.id)}
         />
       ));
-     }
-
+    // }
+      }
     return (
       <Auxilary>
-        <Modal show={this.state.edited}>
+        <Modal show={this.props.edited}>
           <FormEditButton
-            name={this.state.edited ? this.state.categoryToEdit : ""}
-            change={this.editHandler}
-            acceptChange={this.acceptChangeHandler}
-            toggleEdit={this.toggleEdit}
+            name={this.props.edited ? this.props.categoryToEdit : ""}
+            change={(event)=>this.props.editHandler(event.target.value)}
+            acceptChange={()=>this.props.acceptChangeHandler(this.props.categoryToEdit , this.props.categoryToEditId)}
+            toggleEdit={this.props.toggleEdit}
           ></FormEditButton>
           ></Modal>
-        <Modal show = {this.state.added}>
+        <Modal show = {this.props.added}>
             <FormAddButton
             thestate = "Category"
-            acceptAddHandler={this.acceptAddHandler}
-            toggleAdd={this.toggleAdd}
-            addname = {this.addname}
+            acceptAddHandler={this.props.acceptAddHandler}
+            toggleAdd={this.props.toggleAdd}
+            addname = {(event)=>this.props.addname(event.target.value,this.props.category.length)}
             ></FormAddButton>
         </Modal>
         <Layout
-                view = {this.viewCategory}
-                addhandler = {this.addhandler}/> 
+                view = {this.props.viewCategory}
+                addhandler = {this.props.addhandler}/> 
         {listcategory}  
       </Auxilary>
     );
@@ -145,27 +152,27 @@ componentDidMount()
 
 const mapStateToProps = state =>{
   return {
-    categorytoAdd :state.categorytoAdd,
-    category      :state.category,
-    edited        :state.edited,
-    added         :state.added,
-    view          :state.view
+    categorytoAdd :state.cat.categorytoAdd,
+    categoryToEdit: state.cat.categoryToEdit,
+    categoryToEditId : state.cat.categoryToEditId,
+    category      :state.cat.category,
+    edited        :state.cat.edited,
+    added         :state.cat.added,
+    view          :state.cat.view
   };
 }
-  mapDispatchtoProps = dispatch =>{
+  const mapDispatchtoProps = dispatch =>{
     return{
-      removecategory:             () =>dispatch({type:''}),
-      addname:                    () =>dispatch({type:''}),
-      addhandler:                 () =>dispatch({type:''}),
-      acceptAddHandler:           () =>dispatch({type:''}),
-      editCategory:               () =>dispatch({type:''}),
-      toggleEdit:                 () =>dispatch({type:''}),
-      toggleAdd:                  () =>dispatch({type:''}),
-      viewCategory:               () =>dispatch({type:''}),
-      editHandler:                () =>dispatch({type:''}),
-      acceptChangeHandler:        () =>dispatch({type:''}),
-    };
+      removeCategory:             (id) =>dispatch({type:actionTypes.REMOVE_CATEGORY, CategoryElId : id }),                         // Yes
+      addname:                    (value, length) =>dispatch({type:actionTypes.ADD_NAME , payload:value , length :length}),                                  // NO
+      addhandler:                 () =>dispatch({type:actionTypes.ADD_HANDLER}),                                                    // Yes
+      acceptAddHandler:           () =>dispatch({type:actionTypes.ACCEPT_ADD_HANDLER}),                                             // Kind off
+      editCategory:               (category) =>dispatch({type:actionTypes.EDIT_CATEGORY, category:category}),                       // Yes
+      toggleEdit:                 () =>dispatch({type:actionTypes.TOGGLE_EDIT}),                                                    // Yes
+      toggleAdd:                  () =>dispatch({type:actionTypes.TOGGLE_ADD}),                                                     // Yes
+      viewCategory:               () =>dispatch({type:actionTypes.VIEW_CATEGORY}),                                                  // Yes
+      editHandler:                (value) =>dispatch({type:actionTypes.EDIT_HANDLER,payload : value}),                             // Yes
+      acceptChangeHandler:        (name ,id)=>dispatch({type:actionTypes.ACCEPT_CHANGE_HANDLER , name : name , id : id}),                                           // YES 
+  };
   }
-
-
 export default connect(mapStateToProps,mapDispatchtoProps)(CategoryPage);
